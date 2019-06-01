@@ -31,8 +31,9 @@ private byte dummy;
   public void launchFrame() {
     System.out.printf("Start of compress on %tc%n", new java.util.Date());
     // ---------------------------------------------------------------
-    String inputFile = "C:\\Test\\gashoutput.gz";
-    String outputFile = "C:\\Test\\uncompressoutput.txt";
+    String inputFile = "C:\\Test\\gashoutputlarge.gz";
+    String outputFile = "C:\\Test\\uncompressoutputlarge.txt";
+    long bytestransferred = 0L;
 
     try (// Input objects
          FileInputStream fis = new FileInputStream(inputFile);
@@ -55,6 +56,7 @@ private byte dummy;
 
     System.out.println("\nFiles used");
     System.out.printf("Input file: %s%nOutput file: %s%n", inputFile, outputFile);
+    System.out.printf("bytestransferred: %d bytes%n", bytestransferred);
 
     // ---------------------------------------------------------------
     System.out.printf("End of compress on %tc%n", new java.util.Date());
