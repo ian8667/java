@@ -7,12 +7,13 @@ import java.util.zip.GZIPOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 /**
  * Compresses a file using the GZIP file format.
  *
  * @author Ian Molloy May 2019
- * @version (#)Compress_Gzip.java        1.01 2019-05-24
+ * @version (#)Compress_Gzip.java        1.02 2019-06-01
  */
 public class Compress_Gzip {
 private byte dummy;
@@ -42,10 +43,11 @@ private byte dummy;
          BufferedInputStream buffread = new BufferedInputStream(fis);
          // Output objects
          FileOutputStream fos = new FileOutputStream(outputFile);
-         GZIPOutputStream gos = new GZIPOutputStream(fos);)
+         GZIPOutputStream gos = new GZIPOutputStream(fos);
+         BufferedOutputStream buffwrite = new BufferedOutputStream(gos); )
     {
 
-       bytestransferred = buffread.transferTo(gos);
+         bytestransferred = buffread.transferTo(buffwrite);
 
     } catch (FileNotFoundException e) {
       System.err.println("File not found problem");
@@ -61,8 +63,8 @@ private byte dummy;
 
     difference = Math.abs(filelength - bytestransferred);
     System.out.printf("\nInput file length: %d bytes%n", filelength);
-    System.out.printf("Bytes transferred to Gzip: %d bytes%n%n", bytestransferred);
-    System.out.printf("Difference: %d bytes%n", difference);
+    System.out.printf("Bytes transferred to Gzip: %d bytes%n", bytestransferred);
+    System.out.printf("Difference: %d bytes%n%n", difference);
 
     // ---------------------------------------------------------------
     System.out.printf("End of compress on %tc%n", new java.util.Date());
