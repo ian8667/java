@@ -1,13 +1,7 @@
 // Copyright (c) 2002 MyHouse
 //package ian;
-//import javafx.beans.property.*;
-import java.io.IOException;
-import java.io.FileNotFoundException;
-import java.util.Properties;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.File;
-import java.nio.channels.FileChannel;
+import java.nio.file.*;
+import java.io.*;
 // Hadoop imports
 /**
  * <p>A file to practice my Java as I go through the book
@@ -45,65 +39,20 @@ import java.nio.channels.FileChannel;
  *    Some sample text as Sun Microsystems, Inc does it.
  * </pre>
  * </blockquote>
- *
- * <p>JDK 12 Documentation<br />
- * https://docs.oracle.com/en/java/javase/12/</p>
+ * <p>
  *
  * @author Ian Molloy April 2001
- * @version (#)coreJava.java        3.76 2019-05-18
+ * @version (#)coreJava.java        3.81 2020-04-04
  */
 public class coreJava {
 private byte dummy;
-private String Inputfilename;
-private long ChunkSize;
   /**
    * Constructor
    */
   public coreJava() {
     this.dummy = 99;
-    Inputfilename = "";
-    ChunkSize = 0L;
     launchFrame();
   }//end of constructor
-
-private void getProperties() {
-
-    final String propsfile = "C:\\family\\ian\\coreJava.properties";
-    Properties props = new Properties();
-
-try (FileInputStream fstream = new FileInputStream(propsfile)) {
-
-    // load a properties file
-    props.load(fstream);
-
-    // get the property value and print it out
-    Inputfilename = props.getProperty("inputfilename");
-    ChunkSize = Long.parseLong(props.getProperty("chunksize"));
-
-    System.out.printf("Input filename: %s%n", Inputfilename);
-    System.out.printf("Chunk size: %d bytes%n", ChunkSize);
-
-} catch (IOException ex) {
-    ex.printStackTrace();
-}
-
-} //end method getProperties
-
-
-private FileChannel getChunkChannel(String fname, int seqNum) throws FileNotFoundException {
- StringBuilder sb = new StringBuilder(fname);
- String newNum = String.format("_%04d", seqNum);
-
- int pos = fname.lastIndexOf(".");
- if (pos == -1) {
-   // We don't appear to have a file extension.
-   sb.append(newNum);
- } else {
-   sb.insert(pos, newNum);
- }
-
- return (new FileOutputStream(sb.toString()).getChannel());
-} //end method getChunkChannel
 
   /**
    * Working test method.
@@ -114,56 +63,16 @@ private FileChannel getChunkChannel(String fname, int seqNum) throws FileNotFoun
   public void launchFrame() {
     System.out.printf("Start of test on %tc%n", new java.util.Date());
     // ---------------------------------------------------------------
-   System.out.println("Hello world");
-// Get the properties required for the program.
-getProperties();
+Path myzip = FileSystems.getDefault().getPath("C:\\Gash", "gashtest.zip");
+OpenOption[] options =
+    new OpenOption[] {StandardOpenOption.READ, StandardOpenOption.TRUNCATE_EXISTING};
 
-int chunkIndex = 0;
-
-// Position of where we are in the file.
-long filePosition = 0L;
-
-long fileLength = (new File(Inputfilename).length());
-System.out.printf("Input file length is %d bytes%n", fileLength);
-
-FileChannel chunkChan;
-
-System.out.println("");
-
-try (FileChannel inChan = (new FileInputStream(Inputfilename)).getChannel())
-{
-
- // loop to process the input file.
- while (filePosition < fileLength) {
-
-   // Get the next chunk channel to write to.
-   chunkIndex++;
-   chunkChan = getChunkChannel(Inputfilename, chunkIndex);
-
-System.out.printf("Writing to chunk# %d%n", chunkIndex);
-
-// Write a portion (chunk) of the input file as a file to disk.
-try {
-    filePosition += inChan.transferTo(filePosition, ChunkSize, chunkChan);
-} catch (Exception e3) {
-    e3.printStackTrace();
-} finally {
-   chunkChan.close();
-}
-
-
- } //end while loop
-
-System.out.printf("%nInput file split into %d chunks%n", chunkIndex);
-
-} catch (FileNotFoundException e1) {
+try (InputStream fis = Files.newInputStream(myzip, options);) {
+System.out.println("hello world");
+} catch (IOException e1) {
   e1.printStackTrace();
-} catch (IOException e2) {
-  e2.printStackTrace();
 } finally {
-  String parent = (new File(Inputfilename).getParent());
-  System.out.printf("%nSee directory %s for the files concerned%n", parent);
-  System.out.println("All done now. Input file split complete");
+System.out.println("the finally block");
 }
 
     // ---------------------------------------------------------------
