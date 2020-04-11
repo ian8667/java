@@ -1,7 +1,6 @@
 // Copyright (c) 2002 MyHouse
 //package ian;
-import java.nio.file.*;
-import java.io.*;
+//import java.nio.file.*;
 // Hadoop imports
 /**
  * <p>A file to practice my Java as I go through the book
@@ -41,8 +40,11 @@ import java.io.*;
  * </blockquote>
  * <p>
  *
+ * JDK 14 Documentation
+ * https://docs.oracle.com/en/java/javase/14/
+ *
  * @author Ian Molloy April 2001
- * @version (#)coreJava.java        3.81 2020-04-04
+ * @version (#)coreJava.java        3.82 2020-04-11
  */
 public class coreJava {
 private byte dummy;
@@ -63,18 +65,29 @@ private byte dummy;
   public void launchFrame() {
     System.out.printf("Start of test on %tc%n", new java.util.Date());
     // ---------------------------------------------------------------
-Path myzip = FileSystems.getDefault().getPath("C:\\Gash", "gashtest.zip");
-OpenOption[] options =
-    new OpenOption[] {StandardOpenOption.READ, StandardOpenOption.TRUNCATE_EXISTING};
-
-try (InputStream fis = Files.newInputStream(myzip, options);) {
-System.out.println("hello world");
-} catch (IOException e1) {
-  e1.printStackTrace();
-} finally {
-System.out.println("the finally block");
+//Java Unzip File Example
+//https://www.journaldev.com/960/java-unzip-file-example
+//Zip Slip Vulnerability (?)
+int fred = 443;
+switch(fred) {
+case 0 : {System.out.println("this is zero"); break;}
+case 1 : {System.out.println("this is one"); break;}
+case 2 : {System.out.println("this is two"); break;}
+case 3 : {System.out.println("this is three"); break;}
+default : {System.out.println("this one has me puzzled");}
 }
 
+String str = "*";
+System.out.println(str.repeat(24));
+
+String result = switch(fred) {
+ case 0 -> "new zero";
+ case 1 -> "new one";
+ case 2 -> "new two";
+ case 3 -> "new three";
+ default -> "?";
+};
+System.out.printf("The result is now %s%n", result);
     // ---------------------------------------------------------------
     System.out.printf("End of test on %tc%n", new java.util.Date());
   }//end of launchFrame
