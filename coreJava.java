@@ -1,6 +1,13 @@
 // Copyright (c) 2002 MyHouse
 //package ian;
-//import java.nio.file.*;
+//import java.time.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.text.DecimalFormat;
+import java.time.temporal.JulianFields;
+import java.time.LocalDate;
+import java.time.LocalTime;
 // Hadoop imports
 /**
  * <p>A file to practice my Java as I go through the book
@@ -44,7 +51,7 @@
  * https://docs.oracle.com/en/java/javase/14/
  *
  * @author Ian Molloy April 2001
- * @version (#)coreJava.java        3.82 2020-04-11
+ * @version (#)coreJava.java        3.83 2020-05-22T13:21:32
  */
 public class coreJava {
 private byte dummy;
@@ -68,26 +75,39 @@ private byte dummy;
 //Java Unzip File Example
 //https://www.journaldev.com/960/java-unzip-file-example
 //Zip Slip Vulnerability (?)
-int fred = 443;
-switch(fred) {
-case 0 : {System.out.println("this is zero"); break;}
-case 1 : {System.out.println("this is one"); break;}
-case 2 : {System.out.println("this is two"); break;}
-case 3 : {System.out.println("this is three"); break;}
-default : {System.out.println("this one has me puzzled");}
-}
 
-String str = "*";
-System.out.println(str.repeat(24));
+System.out.println("\nTest one");
+DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+LocalTime time = LocalTime.now();
+System.out.println(formatter.format(time));
 
-String result = switch(fred) {
- case 0 -> "new zero";
- case 1 -> "new one";
- case 2 -> "new two";
- case 3 -> "new three";
- default -> "?";
-};
-System.out.printf("The result is now %s%n", result);
+
+System.out.println("\nTest two");
+LocalDateTime ldt = LocalDateTime.now();
+System.out.println(ldt);
+System.out.println(ldt.withNano(0));
+
+
+System.out.println("\nTest three");
+//Enum ChronoUnit
+LocalDateTime ldt2 = LocalDateTime.now();
+System.out.println(ldt2);
+System.out.println(ldt2.truncatedTo(ChronoUnit.SECONDS));
+
+
+System.out.println("\nTest four");
+LocalDateTime ldt4 = LocalDateTime.now();
+DateTimeFormatter df = DateTimeFormatter.ofPattern("D");
+System.out.printf("Day number %s%n", df.format(ldt4));
+
+
+System.out.println("\nTest five");
+LocalDate ldt5 = LocalDate.now();
+// JULIAN_DAY MODIFIED_JULIAN_DAY
+DecimalFormat deci = new DecimalFormat("#######.0");
+long jd = ldt5.getLong(JulianFields.JULIAN_DAY);
+System.out.printf("Day number %s %n", deci.format(jd - 0.5));
+
     // ---------------------------------------------------------------
     System.out.printf("End of test on %tc%n", new java.util.Date());
   }//end of launchFrame
