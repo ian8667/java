@@ -1,13 +1,11 @@
 // Copyright (c) 2002 MyHouse
 //package ian;
 //import java.time.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.text.DecimalFormat;
-import java.time.temporal.JulianFields;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+import java.nio.file.FileStore;
+import java.io.IOException;
 // Hadoop imports
 /**
  * <p>A file to practice my Java as I go through the book
@@ -49,9 +47,11 @@ import java.time.LocalTime;
  *
  * JDK 14 Documentation
  * https://docs.oracle.com/en/java/javase/14/
+ * Java SE API docs
+ * https://docs.oracle.com/en/java/javase/14/docs/api/index.html
  *
  * @author Ian Molloy April 2001
- * @version (#)coreJava.java        3.83 2020-05-22T13:21:32
+ * @version (#)coreJava.java        3.85 2020-06-01T13:51:24
  */
 public class coreJava {
 private byte dummy;
@@ -76,37 +76,20 @@ private byte dummy;
 //https://www.journaldev.com/960/java-unzip-file-example
 //Zip Slip Vulnerability (?)
 
-System.out.println("\nTest one");
-DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-LocalTime time = LocalTime.now();
-System.out.println(formatter.format(time));
+Path mypath = Paths.get("C:\\Gash\\gash.docx");
+// get FileStore object
+try {
 
+    FileStore fs = Files.getFileStore(mypath);
 
-System.out.println("\nTest two");
-LocalDateTime ldt = LocalDateTime.now();
-System.out.println(ldt);
-System.out.println(ldt.withNano(0));
-
-
-System.out.println("\nTest three");
-//Enum ChronoUnit
-LocalDateTime ldt2 = LocalDateTime.now();
-System.out.println(ldt2);
-System.out.println(ldt2.truncatedTo(ChronoUnit.SECONDS));
-
-
-System.out.println("\nTest four");
-LocalDateTime ldt4 = LocalDateTime.now();
-DateTimeFormatter df = DateTimeFormatter.ofPattern("D");
-System.out.printf("Day number %s%n", df.format(ldt4));
-
-
-System.out.println("\nTest five");
-LocalDate ldt5 = LocalDate.now();
-// JULIAN_DAY MODIFIED_JULIAN_DAY
-DecimalFormat deci = new DecimalFormat("#######.0");
-long jd = ldt5.getLong(JulianFields.JULIAN_DAY);
-System.out.printf("Day number %s %n", deci.format(jd - 0.5));
+    // print FileStore name and Total size
+    System.out.printf("FileStore Name: %s%n",fs.name());
+    System.out.printf("FileStore TotalSpace: %d%n", fs.getTotalSpace());
+    System.out.printf("FileStore getBlockSize: %d%n", fs.getBlockSize());
+} catch (IOException e) {
+    // TODO Auto-generated catch block
+    e.printStackTrace();
+}
 
     // ---------------------------------------------------------------
     System.out.printf("End of test on %tc%n", new java.util.Date());
