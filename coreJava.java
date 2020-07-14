@@ -1,12 +1,13 @@
 // Copyright (c) 2002 MyHouse
 //package ian;
 //import java.time.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.Files;
-import java.nio.file.FileStore;
-import java.io.IOException;
-// Hadoop imports
+import java.math.BigInteger;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.nio.charset.StandardCharsets;
+import java.util.Optional;
+import java.util.function.Consumer;
 /**
  * <p>A file to practice my Java as I go through the book
  * 'Core Java Volume 2 - Advanced Features'.</p>
@@ -51,7 +52,7 @@ import java.io.IOException;
  * https://docs.oracle.com/en/java/javase/14/docs/api/index.html
  *
  * @author Ian Molloy April 2001
- * @version (#)coreJava.java        3.85 2020-06-01T13:51:24
+ * @version (#)coreJava.java        3.88 2020-07-14T18:03:38
  */
 public class coreJava {
 private byte dummy;
@@ -75,25 +76,31 @@ private byte dummy;
 //Java Unzip File Example
 //https://www.journaldev.com/960/java-unzip-file-example
 //Zip Slip Vulnerability (?)
-
-Path mypath = Paths.get("C:\\Gash\\gash.docx");
-// get FileStore object
+MessageDigest md5 = null;
 try {
-
-    FileStore fs = Files.getFileStore(mypath);
-
-    // print FileStore name and Total size
-    System.out.printf("FileStore Name: %s%n",fs.name());
-    System.out.printf("FileStore TotalSpace: %d%n", fs.getTotalSpace());
-    System.out.printf("FileStore getBlockSize: %d%n", fs.getBlockSize());
-} catch (IOException e) {
-    // TODO Auto-generated catch block
-    e.printStackTrace();
+  md5 = MessageDigest.getInstance("MD5");
+} catch (NoSuchAlgorithmException e) {
+  e.printStackTrace();
 }
 
+
+String message = "Hello World";
+Consumer<String> konsumer = (String m) -> System.out.printf("Hash = %s%n", m);
+
+// Calculate Message Digest as bytes:
+md5.update(message.getBytes(StandardCharsets.US_ASCII));
+// Convert to 32-char long String:
+//Converts message digest value in base 16 (hex)
+//String result = String.format("%032x%n", new BigInteger(1, myBytes));
+String fred = new BigInteger(1, md5.digest()).toString(16);
+String md5Result = new BigInteger(1, md5.digest()).toString(16);
+
+Optional<String> opt = Optional.of(md5Result);
+opt.ifPresent(konsumer);
+//System.out.printf("Hash = %s%n", result);
     // ---------------------------------------------------------------
     System.out.printf("End of test on %tc%n", new java.util.Date());
-  }//end of launchFrame
+  } //end of launchFrame
 
   /**
    * main
@@ -105,6 +112,6 @@ try {
          new coreJava();
        }
     });
-  }//end of main
+  } //end of main
 
-}//end of class
+} //end of class
