@@ -46,13 +46,20 @@ import java.util.function.Consumer;
  * </blockquote>
  * <p>
  *
+ * Which one of these is best to use:
+ * String result = String.format("%032x%n", new BigInteger(1, myBytes));
+ * String md5Result = new BigInteger(1, md5.digest()).toString(16);
+ *
  * JDK 14 Documentation
  * https://docs.oracle.com/en/java/javase/14/
  * Java SE API docs
  * https://docs.oracle.com/en/java/javase/14/docs/api/index.html
  *
+ * Apache Hadoop Main 3.2.1 API
+ * https://hadoop.apache.org/docs/stable/api/index.html
+ *
  * @author Ian Molloy April 2001
- * @version (#)coreJava.java        3.88 2020-07-14T18:03:38
+ * @version (#)coreJava.java        3.90 2020-07-20T13:14:33
  */
 public class coreJava {
 private byte dummy;
@@ -67,7 +74,7 @@ private byte dummy;
   /**
    * Working test method.
    * Floating point formatting to decimal places: %.2f
-   * A format of %03d will pad, for example, a 5 to 005.
+   * A format of %07d will pad, for example, a 7 to 007.
    * topLevel.setLocationRelativeTo(null);
    */
   public void launchFrame() {
@@ -76,28 +83,10 @@ private byte dummy;
 //Java Unzip File Example
 //https://www.journaldev.com/960/java-unzip-file-example
 //Zip Slip Vulnerability (?)
-MessageDigest md5 = null;
-try {
-  md5 = MessageDigest.getInstance("MD5");
-} catch (NoSuchAlgorithmException e) {
-  e.printStackTrace();
-}
 
 
-String message = "Hello World";
-Consumer<String> konsumer = (String m) -> System.out.printf("Hash = %s%n", m);
-
-// Calculate Message Digest as bytes:
-md5.update(message.getBytes(StandardCharsets.US_ASCII));
-// Convert to 32-char long String:
-//Converts message digest value in base 16 (hex)
-//String result = String.format("%032x%n", new BigInteger(1, myBytes));
-String fred = new BigInteger(1, md5.digest()).toString(16);
-String md5Result = new BigInteger(1, md5.digest()).toString(16);
-
-Optional<String> opt = Optional.of(md5Result);
-opt.ifPresent(konsumer);
-//System.out.printf("Hash = %s%n", result);
+String fred2 = String.format("fred formatted number is %,d", 2000000);
+System.out.printf("%s%n", fred2);
     // ---------------------------------------------------------------
     System.out.printf("End of test on %tc%n", new java.util.Date());
   } //end of launchFrame
